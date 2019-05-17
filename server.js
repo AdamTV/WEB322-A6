@@ -3,7 +3,15 @@ var express = require("express");
 var app = express();
 var path = require("path");
 //var data = require("data-service.js");
-var employees = require("employees.json");
+var employees = require("./data/employees.json");
+var departments = require("./data/departments");
+var managers = [];
+var regex = /.*/;
+
+for (let i = 0; i < employees.length; i++){
+    if(employees[i].isManager)
+    managers.push(employees[i]);
+}
 
 app.use(express.static('public')); 
 
@@ -17,8 +25,19 @@ app.get("/about", (req, res) => {
 });
 
 app.get("/employees", (req, res) => {
-    //res.send(employees);
-    //res.json(employees);
+    res.json(employees);
+});
+
+app.get("/managers", (req, res) => {
+    res.json(managers);
+});
+
+app.get("/departments", (req, res) => {
+    res.json(departments);
+});
+
+app.get(regex, (req, res) => {
+    res.send("This is not the page you are looking for!");
 });
 
 // setup http server to listen on HTTP_PORT
