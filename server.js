@@ -2,7 +2,7 @@ var HTTP_PORT = process.env.PORT || 8080;
 var express = require("express");
 var app = express();
 var path = require("path");
-const data = require("./data-service.js");
+const dataservice = require("./data-service.js");
 var employees = require("./data/employees.json");
 var departments = require("./data/departments");
 var managers = [];
@@ -42,10 +42,10 @@ app.get(regex, (req, res) => {
 });
 
 // setup http server to listen on HTTP_PORT if initilization successful
-data.initialize()
+dataservice.initialize()
 .then(()=>{app.listen(HTTP_PORT);})
 .then(()=>{console.log(`Express http server listening on ${HTTP_PORT}`);})
-.catch((err)=>{console.log(`unable to start server: ${err}`);})
+.catch((err)=>{console.log(`unable to start server: ${err}`);});
 
 
 

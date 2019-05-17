@@ -2,7 +2,7 @@ const fs = require('fs');
 var employees = [];
 var departments = [];
 
-initialize = function() {
+module.exports.initialize = function() {
 fs.readFile('/data/employees','utf8', (err, data) => {
     if (err) Promise.reject(new Error('unable to read file')).then(function() {
         // not called
