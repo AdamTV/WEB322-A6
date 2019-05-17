@@ -2,7 +2,7 @@ var HTTP_PORT = process.env.PORT || 8080;
 var express = require("express");
 var app = express();
 var path = require("path");
-//var data = require("data-service.js");
+const data = require("./data-service.js");
 var employees = require("./data/employees.json");
 var departments = require("./data/departments");
 var managers = [];
@@ -37,9 +37,15 @@ app.get("/departments", (req, res) => {
 });
 
 app.get(regex, (req, res) => {
-    res.send("This is not the page you are looking for!");
+    res.status(404);
+    res.sendFile(path.join(__dirname,"/views/404.html"));
 });
 
-// setup http server to listen on HTTP_PORT
-app.listen(HTTP_PORT);
-console.log(`Express http server listening on ${HTTP_PORT}`);
+// setup http server to listen on HTTP_PORT if initilization successful
+data.initialize()
+.then(()=>{app.listen(HTTP_PORT);})
+.then(()=>{console.log(`Express http server listening on ${HTTP_PORT}`);})
+.catch((err)=>{console.log(`unable to start server: ${err}`);})
+
+
+
