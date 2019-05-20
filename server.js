@@ -25,15 +25,21 @@ app.get("/about", (req, res) => {
 });
 
 app.get("/employees", (req, res) => {
-    res.json(employees);
+    dataservice.getAllEmployees()
+    .then((data) => { res.json(data); })
+    .catch((err) => { res.json({ message: err });})
 });
 
 app.get("/managers", (req, res) => {
-    res.json(managers);
+    dataservice.getManagers()
+    .then((data) => { res.json(data); })
+    .catch((err) => { res.json({ message: err });})
 });
 
 app.get("/departments", (req, res) => {
-    res.json(departments);
+    dataservice.getDepartments()
+        .then((data) => { res.json(data); })
+        .catch((err) => { res.json({ message: err });})
 });
 
 app.get(regex, (req, res) => {
