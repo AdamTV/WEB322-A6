@@ -18,5 +18,5 @@ module.exports.initialize = function () {
       departments.push(data);
     }
   });
-  return new Promise.resolve();
+  return Promise.resolve();
 }
