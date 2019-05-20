@@ -3,20 +3,17 @@ var employees = [];
 var departments = [];
 
 module.exports.initialize = function () {
-  fs.readFile('/data/employees', 'utf8', (err, data) => {
-    if (err) return Promise.reject(new Error('unable to read employee file'));
-    else {
+  return new Promise(function (resolve, reject) {
+    fs.readFile('/data/employees', 'utf8', (err, data) => {
+      if (err) reject("unable to read file");
       JSON.parse(data);
       employees.push(data);
-    }
+      fs.readFile('/data/departments', 'utf8', (err, data) => {
+        if (err) reject("unable to read file");
+        JSON.parse(data);
+        departments.push(data);
+        resolve();
+      });
+    });
   });
-
-  fs.readFile('/data/departments', 'utf8', (err, data) => {
-    if (err) return Promise.reject(new Error('unable to read departments file'));
-    else {
-      JSON.parse(data);
-      departments.push(data);
-    }
-  });
-  return Promise.resolve();
 }
