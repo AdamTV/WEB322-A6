@@ -1,17 +1,22 @@
+/********************************************************************************************************
+*  WEB322 – Assignment 02                                                                               *
+*  I declare that this assignment is my own work in accordance with Seneca  Academic Policy.  No part   *
+*  of this assignment has been copied manually or electronically from any other source                  *
+*  (including 3rd party web sites) or distributed to other students.                                    *
+*                                                                                                       *
+*  Name: ADAM STINZIANI             Student ID: 124521188           Date: 2019-05-20                    *
+*                                                                                                       *
+*  Online (Heroku) Link: https://quiet-wave-56360.herokuapp.com/                                        *
+*                                                                                                       *
+********************************************************************************************************/ 
+
 var HTTP_PORT = process.env.PORT || 8080;
 var express = require("express");
 var app = express();
 var path = require("path");
 const dataservice = require("./data-service.js");
-var employees = require("./data/employees.json");
-var departments = require("./data/departments");
-var managers = [];
 var regex = /.*/;
 
-for (let i = 0; i < employees.length; i++){
-    if(employees[i].isManager)
-    managers.push(employees[i]);
-}
 
 app.use(express.static('public')); 
 
