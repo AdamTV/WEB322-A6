@@ -6,6 +6,7 @@ module.exports.initialize = function () {
   return new Promise(function (resolve, reject) {
     fs.readFile('/data/employees', 'utf8', (err, data) => {
       if (err) reject("unable to read file");
+      console.log(data);
       JSON.parse(data);
       employees.push(data);
       fs.readFile('/data/departments', 'utf8', (err, data) => {
