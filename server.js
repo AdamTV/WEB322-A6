@@ -11,11 +11,13 @@
 ********************************************************************************************************/ 
 
 const HTTP_PORT = process.env.PORT || 8080;
+//CREATE EXPORTS OBJECT
 const express = require("express");
+//CREATE EXPRESS OBJECT TO EXPOSE METHODS
 const app = express();
 const path = require("path");
 const dataservice = require("./data-service.js");
-const regex = /.*/;
+//const regex = /.*/;
 
 //ENABLE SERVICE OF STATIC FILES
 app.use(express.static('public')); 
@@ -47,7 +49,7 @@ app.get("/departments", (req, res) => {
         .catch((err) => { res.json({ message: err });})
 });
 
-app.get(regex, (req, res) => {
+app.use((req, res) => {
     res.status(404);
     res.sendFile(path.join(__dirname,"/views/404.html"));
 });
