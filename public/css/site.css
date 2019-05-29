@@ -1,6 +1,24 @@
 h1, h2, h3, h4, h5, h6{
     font-family: 'Abril Fatface', cursive;
+    color: white;
 }
 p{
     font-family: 'Open Sans', sans-serif;
+    color: white;
+}
+
+body{
+    background-color: red;
+}
+
+.navbar{
+    border-color: aqua;
+    background-color: aqua;
+    font-family: 'Abril Fatface', cursive;
+
+    
+}
+
+.navbar-toggle{
+    background-color: whitesmoke;
 }
