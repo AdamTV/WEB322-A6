@@ -10,12 +10,12 @@
 *                                                                                                       *
 ********************************************************************************************************/ 
 
-var HTTP_PORT = process.env.PORT || 8080;
-var express = require("express");
-var app = express();
-var path = require("path");
+const HTTP_PORT = process.env.PORT || 8080;
+const express = require("express");
+const app = express();
+const path = require("path");
 const dataservice = require("./data-service.js");
-var regex = /.*/;
+const regex = /.*/;
 
 //ENABLE SERVICE OF STATIC FILES
 app.use(express.static('public')); 
