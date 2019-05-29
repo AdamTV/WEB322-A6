@@ -17,7 +17,7 @@ var path = require("path");
 const dataservice = require("./data-service.js");
 var regex = /.*/;
 
-
+//ENABLE SERVICE OF STATIC FILES
 app.use(express.static('public')); 
 
 // setup a 'route' to listen on the default url path
