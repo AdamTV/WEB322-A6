@@ -19,7 +19,7 @@ const path = require("path");
 const dataservice = require("./data-service.js");
 //const regex = /.*/;
 
-//ENABLE SERVICE OF STATIC FILES
+//DIRECT APP TO STATIC FOLDER TO USE
 app.use(express.static('public')); 
 
 // setup a 'route' to listen on the default url path
@@ -47,6 +47,14 @@ app.get("/departments", (req, res) => {
     dataservice.getDepartments()
         .then((data) => { res.json(data); })
         .catch((err) => { res.json({ message: err });})
+});
+
+app.get("/employees/add", (req, res) => {
+    res.sendFile(path.join(__dirname, "/views/addEmployee.html"));
+});
+
+app.get("/images/add",(req, res) => {
+    res.sendFile(path.join(__dirname, "/views/addImage.html"));
 });
 
 app.use((req, res) => {
