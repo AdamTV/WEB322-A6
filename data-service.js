@@ -32,7 +32,7 @@ module.exports.getAllEmployees = () => {
 module.exports.getManagers = () => {
   return new Promise(function (resolve, reject) {
     let managers = [];
-    for (let i = 0; i < employees.length; i++){
+    for (let i = 0; i < employees.length; i++) {
       if (employees[i].isManager)
         managers.push(employees[i]);
     }
@@ -49,5 +49,17 @@ module.exports.getDepartments = () => {
       reject("no departments returned");
     else
       resolve(departments);
+  });
+}
+
+module.exports.addEmployee = (employeeData) => {
+  return new Promise((resolve, reject) => {
+    if (employeeData.isManager == undefined)
+      employeeData.isManager = false;
+    else
+      employeeData.isManager = true;
+    employeeData.employeeNum = employees.length + 1;
+    employees.push(employeeData);
+    resolve();
   });
 }

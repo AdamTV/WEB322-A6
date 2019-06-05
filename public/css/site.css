@@ -14,9 +14,7 @@ body{
 .navbar{
     border-color: aqua;
     background-color: aqua;
-    font-family: 'Abril Fatface', cursive;
-
-    
+    font-family: 'Abril Fatface', cursive;    
 }
 
 .navbar-toggle{
