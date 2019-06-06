@@ -1,22 +1,32 @@
-h1, h2, h3, h4, h5, h6{
+h1, h2, h3, h4, h5, h6 {
     font-family: 'Abril Fatface', cursive;
     color: aqua;
 }
-p{
+
+p {
     font-family: 'Open Sans', sans-serif;
     color: white;
 }
 
-body{
+body {
     background-color: red;
 }
 
-.navbar{
+.navbar {
     border-color: aqua;
     background-color: aqua;
-    font-family: 'Abril Fatface', cursive;    
+    font-family: 'Abril Fatface', cursive;
 }
 
-.navbar-toggle{
+.navbar-toggle {
     background-color: whitesmoke;
+}
+
+legend {
+    font-family: 'Abril Fatface', cursive;
+    color: aqua;
+}
+
+label {
+    color: aqua;
 }
