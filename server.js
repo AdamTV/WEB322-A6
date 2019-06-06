@@ -1,10 +1,10 @@
 /********************************************************************************************************
-*  WEB322 – Assignment 02                                                                               *
+*  WEB322 – Assignment 03                                                                               *
 *  I declare that this assignment is my own work in accordance with Seneca  Academic Policy.  No part   *
 *  of this assignment has been copied manually or electronically from any other source                  *
 *  (including 3rd party web sites) or distributed to other students.                                    *
 *                                                                                                       *
-*  Name: ADAM STINZIANI                     Student ID: 124521188                     Date: 2019-05-20  *
+*  Name: ADAM STINZIANI                     Student ID: 124521188                     Date: 2019-06-05  *
 *                                                                                                       *
 *  Online (Heroku) Link: https://quiet-wave-56360.herokuapp.com/                                        *
 *                                                                                                       *
@@ -20,7 +20,7 @@ const multer = require("multer");
 const fs = require('fs');
 const bodyParser = require('body-parser');
 
-app.use(bodyParser.urlencoded({extended : true }));
+app.use(bodyParser.urlencoded({ extended: true }));
 
 // multer requires a few options to be setup to store files with file extensions
 // by default it won't store extensions for security reasons
@@ -51,10 +51,30 @@ app.get("/about", (req, res) => {
 });
 
 app.get("/employees", (req, res) => {
-    dataservice.getAllEmployees()
-        .then((data) => { res.json(data); })
-        .catch((err) => { res.json({ message: err }); })
-});
+    if (req.query.status) {
+        let status = req.query.status;
+        dataservice.getEmployeesByStatus(status)
+            .then((data) => { res.json(data); })
+            .catch((err) => { res.json(err); })
+    }
+    else if (req.query.department) {
+        let department = req.query.department;
+        dataservice.getEmployeesByDepartment(department)
+            .then((data) => { res.json(data); })
+            .catch((err) => { res.json(err); })
+    }
+    else if (req.query.manager) {
+        let manager = req.query.manager;
+        dataservice.getEmployeesByManager(manager)
+            .then((data) => { res.json(data); })
+            .catch((err) => { res.json(err); })
+    }
+    else {
+        dataservice.getAllEmployees()
+            .then((data) => { res.json(data); })
+            .catch((err) => { res.json({ message: err }); })
+    }
+    });
 
 app.get("/managers", (req, res) => {
     dataservice.getManagers()
@@ -83,13 +103,20 @@ app.get("/images", (req, res) => {
     });
 });
 
+app.get("/employee/:value", (req, res) => {
+    var value = req.params.value;
+    dataservice.getEmployeeByNum(value)
+    .then((data) => { res.json(data); })
+    .catch((err) => { res.json(err); })
+});
+
 app.post("/images/add", upload.single("imageFile"), (req, res) => {
     res.redirect("/images");
 });
 
-app.post("/employees/add",(req,res)=>{
+app.post("/employees/add", (req, res) => {
     dataservice.addEmployee(req.body)
-    .then(()=>{res.redirect("/employees")});
+        .then(() => { res.redirect("/employees") });
 });
 
 app.use((req, res) => {

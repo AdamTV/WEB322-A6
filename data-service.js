@@ -63,3 +63,59 @@ module.exports.addEmployee = (employeeData) => {
     resolve();
   });
 }
+
+module.exports.getEmployeesByStatus = (status) => {
+  return new Promise((resolve, reject) => {
+    let gotEmps = [];
+    for (let i = 0; i < employees.length; i++){
+      if (employees[i].status == status)
+        gotEmps.push(employees[i]);
+    }
+    if (gotEmps.length > 0)
+      resolve(gotEmps);
+    else
+      reject("no results returned");
+  });
+}
+
+module.exports.getEmployeesByDepartment = (department) => {
+  return new Promise((resolve, reject) => {
+    let gotEmps = [];
+    for (let i = 0; i < employees.length; i++){
+      if (employees[i].department == department)
+        gotEmps.push(employees[i])
+    }
+    if (gotEmps.length > 0)
+      resolve(gotEmps);
+    else
+      reject("no results returned");
+  });
+}
+
+module.exports.getEmployeesByManager = (manager) => {
+  return new Promise((resolve, reject) => {
+    let gotEmps = [];
+    for (let i = 0; i < employees.length; i++){
+      if (employees[i].employeeManagerNum == manager)
+        gotEmps.push(employees[i])
+    }
+    if (gotEmps.length > 0)
+      resolve(gotEmps);
+    else
+      reject("no results returned");
+  });
+}
+
+module.exports.getEmployeeByNum = (num) => {
+  return new Promise((resolve, reject) => {
+    let gotEmps = [];
+    for (let i = 0; i < employees.length; i++){
+      if (employees[i].employeeNum == num)
+        gotEmps.push(employees[i])
+    }
+    if (gotEmps.length > 0)
+      resolve(gotEmps);
+    else
+      reject("no results returned");
+  });
+}
