@@ -20,6 +20,7 @@ const multer = require("multer");
 const fs = require('fs');
 const bodyParser = require('body-parser');
 
+// use body-parser middleware to handle regular text submissions from html form data
 app.use(bodyParser.urlencoded({ extended: true }));
 
 // multer requires a few options to be setup to store files with file extensions
