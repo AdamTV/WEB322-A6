@@ -111,6 +111,7 @@ app.get("/employee/:value", (req, res) => {
     .catch((err) => { res.json(err); })
 });
 
+//We must accept a single file with the name of imageFile
 app.post("/images/add", upload.single("imageFile"), (req, res) => {
     res.redirect("/images");
 });
