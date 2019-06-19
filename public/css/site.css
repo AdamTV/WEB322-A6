@@ -8,6 +8,7 @@ p {
     color: white;
 }
 #header{
+    font-family: 'Open Sans', sans-serif;
     color: white;
 }
 
@@ -22,7 +23,7 @@ body {
 .navbar {
     border-color: maroon;
     background-color: maroon;
-    font-family: 'Abril Fatface', cursive;
+    font-family: 'Open Sans', sans-serif;
     color: white;
 
 }
@@ -32,10 +33,16 @@ body {
 }
 
 legend {
-    font-family: 'Abril Fatface', cursive;
-    color: maroon;
+    font-family: 'Open Sans', sans-serif;
+    color: white;
 }
 
 label {
-    color: maroon;
+    font-family: 'Open Sans', sans-serif;
+    color: white;
+}
+
+#theHeader{
+    color: white;
+    font-family: 'Abril Fatface', cursive;
 }
