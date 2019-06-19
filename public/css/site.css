@@ -1,21 +1,30 @@
 h1, h2, h3, h4, h5, h6 {
     font-family: 'Abril Fatface', cursive;
-    color: aqua;
+    color: maroon;
 }
 
 p {
     font-family: 'Open Sans', sans-serif;
     color: white;
 }
+#header{
+    color: white;
+}
+
+#headerNow{
+    color: maroon;
+}
 
 body {
-    background-color: red;
+    background-color: rgb(22, 22, 22);
 }
 
 .navbar {
-    border-color: aqua;
-    background-color: aqua;
+    border-color: maroon;
+    background-color: maroon;
     font-family: 'Abril Fatface', cursive;
+    color: white;
+
 }
 
 .navbar-toggle {
@@ -24,9 +33,9 @@ body {
 
 legend {
     font-family: 'Abril Fatface', cursive;
-    color: aqua;
+    color: maroon;
 }
 
 label {
-    color: aqua;
+    color: maroon;
 }
