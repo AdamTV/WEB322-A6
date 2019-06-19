@@ -19,7 +19,35 @@ const dataservice = require("./data-service.js");
 const multer = require("multer");
 const fs = require('fs');
 const bodyParser = require('body-parser');
-const handlebars = require("exphbs");
+const exphbs = require("express-handlebars");
+app.set('view engine', '.hbs');
+app.engine('.hbs', exphbs({
+    extname: '.hbs',
+    defaultLayout: 'main',
+    helpers: {
+        navLink: function (url, options) {
+            return '<li' +
+                ((url == app.locals.activeRoute) ? ' class="active" ' : '') +
+                '><a href="' + url + '">' + options.fn(this) + '</a></li>';
+        },
+        equal: function (lvalue, rvalue, options) {
+            if (arguments.length < 3)
+                throw new Error("Handlebars Helper equal needs 2 parameters");
+            if (lvalue != rvalue) {
+                return options.inverse(this);
+            } else {
+                return options.fn(this);
+            }
+        }        
+    }
+}));
+
+// this adds property "activeRoute" to "app.locals"
+app.use(function (req, res, next) {
+    let route = req.baseUrl + req.path;
+    app.locals.activeRoute = (route == "/") ? "/" : route.replace(/\/$/, "");
+    next();
+});
 
 // use body-parser middleware to handle regular text submissions from html form data
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -45,11 +73,11 @@ app.use(express.static('public'));
 
 // setup a 'route' to listen on the default url path
 app.get("/", (req, res) => {
-    res.sendFile(path.join(__dirname, "/views/home.html"));
+    res.render(path.join(__dirname, "/views/home.hbs"));
 });
 
 app.get("/about", (req, res) => {
-    res.sendFile(path.join(__dirname, "/views/about.html"));
+    res.render(path.join(__dirname, "/views/about.hbs"));
 });
 
 app.get("/employees", (req, res) => {
@@ -76,7 +104,7 @@ app.get("/employees", (req, res) => {
             .then((data) => { res.json(data); })
             .catch((err) => { res.json({ message: err }); })
     }
-    });
+});
 
 app.get("/managers", (req, res) => {
     dataservice.getManagers()
@@ -91,25 +119,25 @@ app.get("/departments", (req, res) => {
 });
 
 app.get("/employees/add", (req, res) => {
-    res.sendFile(path.join(__dirname, "/views/addEmployee.html"));
+    res.render(path.join(__dirname, "/views/addEmployee.hbs"));
 });
 
 app.get("/images/add", (req, res) => {
-    res.sendFile(path.join(__dirname, "/views/addImage.html"));
+    res.render(path.join(__dirname, "/views/addImage.hbs"));
 });
 
 app.get("/images", (req, res) => {
     fs.readdir(path.join(__dirname, "/public/images/uploaded"), function (err, items) {
         console.log(items);
-        res.json({ "images": items });
+        res.render("images", items);
     });
 });
 
 app.get("/employee/:value", (req, res) => {
     var value = req.params.value;
     dataservice.getEmployeeByNum(value)
-    .then((data) => { res.json(data); })
-    .catch((err) => { res.json(err); })
+        .then((data) => { res.json(data); })
+        .catch((err) => { res.json(err); })
 });
 
 //We must accept a single file with the name of imageFile
@@ -124,7 +152,7 @@ app.post("/employees/add", (req, res) => {
 
 app.use((req, res) => {
     res.status(404);
-    res.sendFile(path.join(__dirname, "/views/404.html"));
+    res.render(path.join(__dirname, "/views/404.hbs"));
 });
 
 // setup http server to listen on HTTP_PORT if initilization successful
