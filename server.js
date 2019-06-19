@@ -19,6 +19,7 @@ const dataservice = require("./data-service.js");
 const multer = require("multer");
 const fs = require('fs');
 const bodyParser = require('body-parser');
+const handlebars = require("exphbs");
 
 // use body-parser middleware to handle regular text submissions from html form data
 app.use(bodyParser.urlencoded({ extended: true }));
