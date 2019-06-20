@@ -38,7 +38,7 @@ app.engine('.hbs', exphbs({
             } else {
                 return options.fn(this);
             }
-        }        
+        }
     }
 }));
 
@@ -73,36 +73,36 @@ app.use(express.static('public'));
 
 // setup a 'route' to listen on the default url path
 app.get("/", (req, res) => {
-    res.render(path.join(__dirname, "/views/home.hbs"));
+    res.render("home", { title: "Home" });
 });
 
 app.get("/about", (req, res) => {
-    res.render(path.join(__dirname, "/views/about.hbs"));
+    res.render("about", { title: "About" });
 });
 
 app.get("/employees", (req, res) => {
     if (req.query.status) {
         let status = req.query.status;
         dataservice.getEmployeesByStatus(status)
-            .then((data) => { res.json(data); })
-            .catch((err) => { res.json(err); })
+            .then((data) => { res.render("employees", { employees: data, title: "Employees" }); })
+            .catch((err) => { res.render({ message: "no results" }); })
     }
     else if (req.query.department) {
         let department = req.query.department;
         dataservice.getEmployeesByDepartment(department)
-            .then((data) => { res.json(data); })
-            .catch((err) => { res.json(err); })
+            .then((data) => { res.render("employees", { employees: data, title: "Employees" }); })
+            .catch((err) => { res.render({ message: "no results" }); })
     }
     else if (req.query.manager) {
         let manager = req.query.manager;
         dataservice.getEmployeesByManager(manager)
-            .then((data) => { res.json(data); })
-            .catch((err) => { res.json(err); })
+            .then((data) => { res.render("employees", { employees: data, title: "Employees" }); })
+            .catch((err) => { res.render({ message: "no results" }); })
     }
     else {
         dataservice.getAllEmployees()
-            .then((data) => { res.json(data); })
-            .catch((err) => { res.json({ message: err }); })
+            .then((data) => { res.render("employees", { employees: data, title: "Employees" }); })
+            .catch((err) => { res.render({ message: "no results" }); })
     }
 });
 
@@ -114,30 +114,30 @@ app.get("/managers", (req, res) => {
 
 app.get("/departments", (req, res) => {
     dataservice.getDepartments()
-        .then((data) => { res.json(data); })
-        .catch((err) => { res.json({ message: err }); })
+        .then((data) => { res.render("departments", { departments: data, title: "Departments" }); })
+        .catch((err) => { res.render({ message: "no results" }); })
 });
 
 app.get("/employees/add", (req, res) => {
-    res.render(path.join(__dirname, "/views/addEmployee.hbs"));
+    res.render("addEmployee", { title: "Add Employee" });
 });
 
 app.get("/images/add", (req, res) => {
-    res.render(path.join(__dirname, "/views/addImage.hbs"));
+    res.render("addImage", { title: "Add Image" });
 });
 
 app.get("/images", (req, res) => {
-    fs.readdir(path.join(__dirname, "/public/images/uploaded"), function (err, items) {
-        console.log(items);
-        res.render("images", items);
+    fs.readdir(path.join(__dirname, "/public/images/uploaded"), function (err, data) {
+        console.log(data);
+        res.render("images", { images: data, title: "Images" });
     });
 });
 
 app.get("/employee/:value", (req, res) => {
     var value = req.params.value;
     dataservice.getEmployeeByNum(value)
-        .then((data) => { res.json(data); })
-        .catch((err) => { res.json(err); })
+        .then((data) => { res.render("employee", { employee: data }); })
+        .catch((err) => { res.render("employee", { message: "no results" }); })
 });
 
 //We must accept a single file with the name of imageFile
@@ -148,6 +148,12 @@ app.post("/images/add", upload.single("imageFile"), (req, res) => {
 app.post("/employees/add", (req, res) => {
     dataservice.addEmployee(req.body)
         .then(() => { res.redirect("/employees") });
+});
+
+app.post("/employee/update", (req, res) => {
+    console.log(req.body);
+    dataservice.updateEmployee(req.body)
+        .then(() => { res.redirect("/employees"); })
 });
 
 app.use((req, res) => {

@@ -46,3 +46,8 @@ label {
     color: white;
     font-family: 'Abril Fatface', cursive;
 }
+
+th,td{
+    font-family: 'Open Sans', sans-serif;
+    color: white;
+}

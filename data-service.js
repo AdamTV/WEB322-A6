@@ -108,14 +108,24 @@ module.exports.getEmployeesByManager = (manager) => {
 
 module.exports.getEmployeeByNum = (num) => {
   return new Promise((resolve, reject) => {
-    let gotEmps = [];
+    let gotEmps;
     for (let i = 0; i < employees.length; i++){
       if (employees[i].employeeNum == num)
-        gotEmps.push(employees[i])
+        gotEmps = employees[i];
     }
-    if (gotEmps.length > 0)
+    if (gotEmps)
       resolve(gotEmps);
     else
       reject("no results returned");
+  });
+}
+
+module.exports.updateEmployee = (data) => {
+  return new Promise((resolve, reject) => {
+    for (i = 0; i < employees.length; i++){
+      if (employees[i].employeeNum == data.employeeNum)
+        employees[i] = data;
+    }
+    resolve();
   });
 }
