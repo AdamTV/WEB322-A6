@@ -6,7 +6,7 @@
 *                                                                                                       *
 *  Name: ADAM STINZIANI                     Student ID: 124521188                     Date: 2019-06-19  *
 *                                                                                                       *
-*  Online (Heroku) Link: https://obscure-peak-75579.herokuapp.com/                                      *
+*  Online (Heroku) Link: https://quiet-wave-56360.herokuapp.com/                                        *
 *                                                                                                       *
 ********************************************************************************************************/
 const HTTP_PORT = process.env.PORT || 8080;
