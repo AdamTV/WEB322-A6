@@ -95,28 +95,24 @@ prepData = (data) => {
   return data;
 }
 
-module.exports.addEmployee = (employeeData) => {
+module.exports.addEmployee = employeeData => {
   return new Promise((resolve, reject) => {
-    employeeData = prepData(employeeData);
-    Employees.create({
-      employeeNum: employeeData.employeeNum,
-      firstName: employeeData.firstName,
-      lastName: employeeData.lastName,
-      email: employeeData.email,
-      SSN: employeeData.SSN,
-      addressStreet: employeeData.addressStreet,
-      addressCity: employeeData.addressCity,
-      addressState: employeeData.addressState,
-      addressPostal: employeeData.addressPostal,
-      maritalStatus: employeeData.maritalStatus,
-      isManager: employeeData.isManager,
-      employeeManagerNum: employeeData.employeeManagerNum,
-      status: employeeData.status,
-      department: employeeData.department,
-      hireDate: employeeData.hireDate
+    employeeData.isManager = employeeData.isManager ? true : false;
+    for (let i in employeeData) {
+      if (employeeData[i] == "") {
+        employeeData[i] = null;
+      }
+    }
+    Employee.create(employeeData, {
+      where: {
+        employeeNum: employeeData.employeeNum
+      }
     })
-      .then(() => { console.log("success"); resolve(Employees); })
-      .catch(() => reject("error"));
+      .then(employee => {
+        console.log(employee.firstName)
+        resolve(`creation success: ${employee}`)
+      })
+      .catch(err => reject(err));
   });
 }
 

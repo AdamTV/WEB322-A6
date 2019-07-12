@@ -238,6 +238,8 @@ app.post("/images/add", upload.single("imageFile"), (req, res) => {
 
 // from form post here
 app.post("/employees/add", (req, res) => {
+    req.body.employeeNum = 1;
+    console.log(req.body);
     dataservice.addEmployee(req.body)
         .then(() => { res.redirect("/employees") })
         .catch(() => res.status(500).send("Unable to add Employee / Employee not found"))
@@ -251,6 +253,7 @@ app.post("/employee/update", (req, res) => {
 });
 
 app.post("/departments/add", (req, res) => {
+    console.log(req.body);
     dataservice.addDepartment(req.body)
         .then(() => { res.redirect("/departments") })
         .catch(() => res.status(500).send("Unable to add Department / Department not found"))
