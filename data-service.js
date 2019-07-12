@@ -86,21 +86,37 @@ module.exports.getDepartments = () => {
   });
 }
 
-prepData = (employeeData) => {
-  employeeData.isManager = (employeeData.isManager) ? true : false;
-  for (let values in employeeData) {
-    if (employeeData[values] == "")
-      employeeData[values] = null;
+prepData = (data) => {
+  for (let values in data) {
+    if (data[values] == "")
+      data[values] = null;
   }
-  return employeeData;
+  data.isManager = (data.isManager) ? true : false;
+  return data;
 }
 
 module.exports.addEmployee = (employeeData) => {
   return new Promise((resolve, reject) => {
     employeeData = prepData(employeeData);
-    Employees.create(employeeData)
-      .then(() => resolve("success"))
-      .catch((err) => reject(err));
+    Employees.create({
+      employeeNum: employeeData.employeeNum,
+      firstName: employeeData.firstName,
+      lastName: employeeData.lastName,
+      email: employeeData.email,
+      SSN: employeeData.SSN,
+      addressStreet: employeeData.addressStreet,
+      addressCity: employeeData.addressCity,
+      addressState: employeeData.addressState,
+      addressPostal: employeeData.addressPostal,
+      maritalStatus: employeeData.maritalStatus,
+      isManager: employeeData.isManager,
+      employeeManagerNum: employeeData.employeeManagerNum,
+      status: employeeData.status,
+      department: employeeData.department,
+      hireDate: employeeData.hireDate
+    })
+      .then(() => { console.log("success"); resolve(Employees); })
+      .catch(() => reject("error"));
   });
 }
 
@@ -146,8 +162,8 @@ module.exports.updateDepartment = (data) => {
       departmentId: data.departmentId,
       departmentName: data.departmentName
     }, {
-      where: { departmentId: data.departmentId }
-    }).then(() => resolve(Departments))
+        where: { departmentId: data.departmentId }
+      }).then(() => resolve(Departments))
       .catch(() => reject("unable to update department"));
   });
 }
@@ -155,10 +171,9 @@ module.exports.updateDepartment = (data) => {
 module.exports.getDepartmentbyId = (id) => {
   return new Promise((resolve, reject) => {
     Departments.findAll({
-      where: { departmentId : id }
+      where: { departmentId: id }
     })
-      .then((data) =>
-      { resolve(data[0]) })
+      .then((data) => { resolve(data[0]) })
       .catch((err) => reject("no results returned"));
   });
 }

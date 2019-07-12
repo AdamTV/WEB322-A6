@@ -236,6 +236,7 @@ app.post("/images/add", upload.single("imageFile"), (req, res) => {
     res.redirect("/images");
 });
 
+// from form post here
 app.post("/employees/add", (req, res) => {
     dataservice.addEmployee(req.body)
         .then(() => { res.redirect("/employees") })
