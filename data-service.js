@@ -46,11 +46,26 @@ Departments.hasMany(Employees, { foreignKey: 'department' });
 
 module.exports.initialize = () => {
   return new Promise(function (resolve, reject) {
-    sequelize.sync().then(function () {
-      resolve("database sync success!");
-    }).catch(function () {
-      reject("unable to sync the database");
-    });
+    sequelize.sync().then(() => {
+      console.log("database sync success!");
+      Employees.create({
+        firstName: "Adam",
+        lastName: "Stinziani",
+        email: "Stinziani",
+        SSN: "stinziani",
+        addressStreet: "stinziani",
+        addressCity: "stinziani",
+        addressState: "stinziani",
+        addressPostal: "stinziani",
+        maritalStatus: "stinziani",
+        isManager: 0,
+        employeeManagerNum: 0,
+        status: "stinziani",
+        hireDate: "stinziani"
+      }).then((emp) => resolve(emp)
+      ).catch((err) => reject(err))
+    });//.catch(function () {
+    // reject("unable to sync the database");
   });
 }
 
@@ -95,19 +110,9 @@ prepData = (data) => {
   return data;
 }
 
-module.exports.addEmployee = employeeData => {
+module.exports.addEmployee = (employeeData) => {
   return new Promise((resolve, reject) => {
-    employeeData.isManager = employeeData.isManager ? true : false;
-    for (let i in employeeData) {
-      if (employeeData[i] == "") {
-        employeeData[i] = null;
-      }
-    }
-    Employee.create(employeeData, {
-      where: {
-        employeeNum: employeeData.employeeNum
-      }
-    })
+    Employees.create(employeeData)
       .then(employee => {
         console.log(employee.firstName)
         resolve(`creation success: ${employee}`)
@@ -121,7 +126,7 @@ module.exports.addDepartment = (data) => {
     data = prepData(data);
     Departments.create(data)
       .then(() => resolve("success!"))
-      .catch((err) => reject("unable to create department"));
+      .catch(() => reject("unable to create department"));
   });
 }
 
