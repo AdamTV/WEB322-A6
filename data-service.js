@@ -10,9 +10,9 @@ var sequelize = new Sequelize('d84kpprkfvl7tq', 'fknjdvgcrveyss', 'b587aebca6d57
 
 // Define an "Employees" model
 var Employees = sequelize.define('Employees', {
-  employeeNum: {
+  empNum: {
     type: Sequelize.INTEGER,
-    primaryKey: true, // use "employeeNum" as a primary key
+    primaryKey: true, // use "empNum" as a primary key
     autoIncrement: true // automatically increment the value
   },
   firstName: Sequelize.STRING,
@@ -48,24 +48,10 @@ module.exports.initialize = () => {
   return new Promise(function (resolve, reject) {
     sequelize.sync().then(() => {
       console.log("database sync success!");
-      Employees.create({
-        firstName: "Adam",
-        lastName: "Stinziani",
-        email: "Stinziani",
-        SSN: "stinziani",
-        addressStreet: "stinziani",
-        addressCity: "stinziani",
-        addressState: "stinziani",
-        addressPostal: "stinziani",
-        maritalStatus: "stinziani",
-        isManager: 0,
-        employeeManagerNum: 0,
-        status: "stinziani",
-        hireDate: "stinziani"
-      }).then((emp) => resolve(emp)
-      ).catch((err) => reject(err))
-    });//.catch(function () {
-    // reject("unable to sync the database");
+      resolve();
+    }).catch(function () {
+      reject("unable to sync the database");
+    });
   });
 }
 
@@ -77,17 +63,28 @@ module.exports.getAllEmployees = () => {
   });
 }
 
-getEmployeesByOption = (option) => {
+// getEmployeesByOption = (key,value) => {
+//   return new Promise((resolve, reject) => {
+//     Employees.findAll({
+//       where: {
+//         key: value
+//       }
+//     })
+//       .then((data) => resolve(data))
+//       .catch((err) => reject(err));
+//   });
+// }
+let getEmployeesByOption = option => {
   return new Promise((resolve, reject) => {
     Employees.findAll({
       where: {
         [option]: option
       }
     })
-      .then((data) => resolve(data))
-      .catch((err) => reject(err));
+      .then(data => resolve(data))
+      .catch(err => reject(err));
   });
-}
+};
 
 module.exports.getManagers = () => {
   return getEmployeesByOption(isManager = true);
@@ -130,7 +127,7 @@ module.exports.addDepartment = (data) => {
   });
 }
 
-module.exports.getEmployeesByStatus = (status) => {
+module.exports.getEmployeesByStatus = status => {
   return getEmployeesByOption(status);
 }
 
@@ -142,7 +139,7 @@ module.exports.getEmployeesByManager = (manager) => {
   return getEmployeesByOption(manager);
 }
 
-module.exports.getEmployeeByNum = (num) => {
+module.exports.getEmployeeByNum = num => {
   return getEmployeesByOption(num);
 }
 
@@ -150,7 +147,7 @@ module.exports.updateEmployee = (data) => {
   return new Promise((resolve, reject) => {
     data = prepData(data);
     Employees.update(data, {
-      where: { employeeNum: data.employeeNum }
+      where: { empNum: data.empNum }
     }).then(() => resolve("success!"))
       .catch((err) => reject(err));
   });

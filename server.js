@@ -179,7 +179,7 @@ app.get("/employee/:empNum", (req, res) => {
     // initialize an empty object to store the values
     let viewData = {};
 
-    dataService.getEmployeeByNum(req.params.empNum).then((data) => {
+    dataservice.getEmployeeByNum(req.params.empNum).then((data) => {
         if (data) {
             viewData.employee = data; //store employee data in the "viewData" object as "employee"
         } else {
@@ -187,7 +187,7 @@ app.get("/employee/:empNum", (req, res) => {
         }
     }).catch(() => {
         viewData.employee = null; // set employee to null if there was an error 
-    }).then(dataService.getDepartments)
+    }).then(dataservice.getDepartments)
     .then((data) => {
         viewData.departments = data; // store department data in the "viewData" object as "departments"
 
