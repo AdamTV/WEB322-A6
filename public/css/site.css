@@ -7,14 +7,6 @@ p {
     font-family: 'Open Sans', sans-serif;
     color: white;
 }
-#header{
-    font-family: 'Open Sans', sans-serif;
-    color: grey;
-}
-
-#headerNow{
-    color: maroon;
-}
 
 body {
     background-color: rgb(22, 22, 22);
@@ -50,4 +42,17 @@ label {
 th,td{
     font-family: 'Open Sans', sans-serif;
     color: white;
+}
+
+#remove{
+    font-family: 'Abril Fatface', cursive;
+}
+
+#header{
+    font-family: 'Open Sans', sans-serif;
+    color: white;
+}
+
+#header:hover{
+    color:black;
 }

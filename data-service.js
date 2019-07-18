@@ -40,6 +40,23 @@ var Departments = sequelize.define('Departments', {
   departmentName: Sequelize.STRING
 });
 
+emp1 = {
+  firstName: "asdf",
+  lastName: "asdf",
+  email: "asdf",
+  SSN: "asdf",
+  addressStreet: "asdf",
+  addressCity: "asdf",
+  addressState: "asdf",
+  addressPostal: "asdf",
+  maritalStatus: "asdf",
+  isManager: true,
+  employeeManagerNum: 0,
+  status: "asdf",
+  hireDate: "asdf",
+  department: 19
+}
+
 /*This will ensure that our Employee model gets a "department" column that will act as a foreign key to the Department model.
 When a Department is deleted, any associated Employee's will have a "null" value set to their "department" foreign key.*/
 Departments.hasMany(Employees, { foreignKey: 'department' });
@@ -63,31 +80,18 @@ module.exports.getAllEmployees = () => {
   });
 }
 
-// getEmployeesByOption = (key,value) => {
-//   return new Promise((resolve, reject) => {
-//     Employees.findAll({
-//       where: {
-//         key: value
-//       }
-//     })
-//       .then((data) => resolve(data))
-//       .catch((err) => reject(err));
-//   });
-// }
-let getEmployeesByOption = option => {
+let getEmployeesByOption = (key, value) => {
   return new Promise((resolve, reject) => {
     Employees.findAll({
-      where: {
-        [option]: option
-      }
+      where: { [key] : value }
     })
       .then(data => resolve(data))
       .catch(err => reject(err));
   });
-};
+}
 
 module.exports.getManagers = () => {
-  return getEmployeesByOption(isManager = true);
+  return getEmployeesByOption("isManager", true);
 }
 
 module.exports.getDepartments = () => {
@@ -109,6 +113,8 @@ prepData = (data) => {
 
 module.exports.addEmployee = (employeeData) => {
   return new Promise((resolve, reject) => {
+    employeeData = prepData(employeeData);
+    console.log(employeeData);
     Employees.create(employeeData)
       .then(employee => {
         console.log(employee.firstName)
@@ -127,20 +133,20 @@ module.exports.addDepartment = (data) => {
   });
 }
 
-module.exports.getEmployeesByStatus = status => {
-  return getEmployeesByOption(status);
+module.exports.getEmployeesByStatus = (status) => {
+  return getEmployeesByOption("status", status);
 }
 
 module.exports.getEmployeesByDepartment = (department) => {
-  return getEmployeesByOption(department);
+  return getEmployeesByOption("department", department);
 }
 
 module.exports.getEmployeesByManager = (manager) => {
-  return getEmployeesByOption(manager);
+  return getEmployeesByOption("employeeManagerNum", manager);
 }
 
-module.exports.getEmployeeByNum = num => {
-  return getEmployeesByOption(num);
+module.exports.getEmployeeByNum = (num) => {
+  return getEmployeesByOption("empNum", num);
 }
 
 module.exports.updateEmployee = (data) => {
@@ -161,7 +167,8 @@ module.exports.updateDepartment = (data) => {
       departmentName: data.departmentName
     }, {
         where: { departmentId: data.departmentId }
-      }).then(() => resolve(Departments))
+      })
+      .then(() => resolve(Departments))
       .catch(() => reject("unable to update department"));
   });
 }
@@ -183,5 +190,15 @@ module.exports.deleteDepartmentById = (id) => {
     })
       .then(() => resolve())
       .catch(() => reject("error deleting department"))
+  });
+}
+
+module.exports.deleteEmployeeByNum = (empNum) => {
+  return new Promise((resolve, reject) => {
+    Employees.destroy({
+      where: { empNum: empNum }
+    })
+      .then(() => resolve("Destroyed"))
+      .catch((err) => reject(err))
   });
 }

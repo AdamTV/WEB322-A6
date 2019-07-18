@@ -9,6 +9,7 @@
                         <tr>
                             <th>Department Number</th>
                             <th>Department Name</th>
+                            <th></th>
                         </tr>
                     </thead>
                     <tbody>
@@ -16,7 +17,7 @@
                         <tr>
                             <td><a href="/employees?department={{departmentId}}">{{departmentId}}</a></td>
                             <td><a href="/department/{{departmentId}}">{{departmentName}}</a></td>
-                            <td><a href="/departments/delete/{{departmentId}}" class="btn btn-danger">remove</a></td>
+                            <td><a href="/departments/delete/{{departmentId}}" id="remove" class="btn btn-danger">REMOVE</a></td>
                         </tr>
                         {{/each}}
                     </tbody>

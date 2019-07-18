@@ -136,8 +136,15 @@ app.get("/employees", (req, res) => {
 
 app.get("/managers", (req, res) => {
     dataservice.getManagers()
-        .then((data) => { res.json(data); })
-        .catch((err) => { res.json({ message: err }); })
+    .then((data) => {
+        if (data.length > 0)
+            res.render("managers", { employees: data });
+        else
+            res.render("managers", { message: "no results" });
+    })
+    .catch(() => {
+        res.render("managers", { message: "no results" });
+    });
 });
 
 app.get("/departments", (req, res) => {
@@ -155,8 +162,8 @@ app.get("/departments", (req, res) => {
 
 app.get("/employees/add", (req, res) => {
     dataservice.getDepartments()
-    .then((data)=> res.render("addEmployee", {departments: data}))
-   .catch(()=> res.render("addEmployee", {departments: []}))
+        .then((data) => res.render("addEmployee", { departments: data }))
+        .catch(() => res.render("addEmployee", { departments: [] }))
 });
 
 app.get('/departments/add', (req, res) => {
@@ -187,29 +194,38 @@ app.get("/employee/:empNum", (req, res) => {
         }
     }).catch(() => {
         viewData.employee = null; // set employee to null if there was an error 
-    }).then(dataservice.getDepartments)
-    .then((data) => {
-        viewData.departments = data; // store department data in the "viewData" object as "departments"
+    })
+        .then(dataservice.getDepartments)
+        .catch((err) => {
+            res.status(500).send("Unable to Get departments");
+        })
 
-        // loop through viewData.departments and once we have found the departmentId that matches
-        // the employee's "department" value, add a "selected" property to the matching 
-        // viewData.departments object
+        .then((data) => {
+            viewData.departments = data; // store department data in the "viewData" object as "departments"
 
-        for (let i = 0; i < viewData.departments.length; i++) {
-            if (viewData.departments[i].departmentId == viewData.employee.department) {
-                viewData.departments[i].selected = true;
+            // loop through viewData.departments and once we have found the departmentId that matches
+            // the employee's "department" value, add a "selected" property to the matching 
+            // viewData.departments object
+            console.log(viewData.employee.isArray);
+            for (let i = 0; i < viewData.departments.length; i++) {
+                if (viewData.departments[i].departmentId == viewData.employee[0].department) {
+                    viewData.departments[i].selected = true;
+                }
             }
-        }
 
-    }).catch(() => {
-        viewData.departments = []; // set departments to empty if there was an error
-    }).then(() => {
-        if (viewData.employee == null) { // if no employee - return an error
-            res.status(404).send("Employee Not Found");
-        } else {
-            res.render("employee", { viewData: viewData }); // render the "employee" view
-        }
-    });
+        }).catch(() => {
+            viewData.departments = []; // set departments to empty if there was an error
+        }).then(() => {
+            if (viewData.employee == null) { // if no employee - return an error
+                res.status(404).send("Employee Not Found");
+            } else {
+                res.render("employee", { viewData: viewData }); // render the "employee" view
+            }
+        })
+        .catch((err) => {
+            res.status(500).send("Unable to Render Employee");
+        });
+
 });
 
 
@@ -229,6 +245,12 @@ app.get("/departments/delete/:departmentId", (req, res) => {
     dataservice.deleteDepartmentById(req.params.departmentId)
         .then(() => res.redirect("/departments"))
         .catch(() => res.status(500).send("Unable to Remove Department / Department not found"))
+})
+
+app.get("/employees/delete/:empNum", (req, res) => {
+    dataservice.deleteEmployeeByNum(req.params.empNum)
+        .then(() => res.redirect("/employees"))
+        .catch(() => res.status(500).send("Unable to Remove Employee / Employee not found"))
 })
 
 //We must accept a single file with the name of imageFile
@@ -272,6 +294,8 @@ app.use((req, res) => {
 
 // setup http server to listen on HTTP_PORT if initilization successful
 dataservice.initialize()
-    .then(() => { app.listen(HTTP_PORT); })
-    .then(() => { console.log(`Express http server listening on ${HTTP_PORT}`); })
+    .then(() => {
+        console.log(`Express http server listening on ${HTTP_PORT}`);
+        app.listen(HTTP_PORT);
+    })
     .catch((err) => { console.log(`unable to start server: ${err}`); });

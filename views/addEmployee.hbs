@@ -81,7 +81,7 @@
                                 <div class="form-group">
                                     <label for="employeeManagerNum">Employee's Manager Number:</label>
                                     <input class="form-control" id="employeeManagerNum" name="employeeManagerNum"
-                                        type="text">
+                                        type="number">
                                 </div>
                             </div>
                             <div class="col-md-3">
@@ -102,7 +102,7 @@
                                     <select class="form-control" name="department" id="department">
                                         <option value="">Select Department</option>
                                         {{#each departments}}
-                                        <option value="{{departmentId}}">{{departmentName}}</option>
+                                        <option value={{departmentId}}>{{departmentName}}</option>
                                         {{/each}}
                                     </select>
                                     {{else}}
