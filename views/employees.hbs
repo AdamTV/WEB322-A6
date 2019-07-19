@@ -31,6 +31,9 @@
                         {{#equal status "Part Time"}}
                         <td><a href="/employees?status=Part Time">Part&nbsp;Time</a></td>
                         {{/equal}}
+                        {{#unless status}}
+                        <td>&nbsp;</td>
+                        {{/unless}}
                         <td><a href="/employees?department={{department}}">{{department}}</a></td>
                         <td>{{hireDate}}</td>
                         <td><a href="/employees/delete/{{empNum}}" id="remove" class="btn btn-danger">REMOVE</a></td>
