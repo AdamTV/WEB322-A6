@@ -74,7 +74,9 @@ module.exports.initialize = () => {
 
 module.exports.getAllEmployees = () => {
   return new Promise((resolve, reject) => {
-    Employees.findAll()
+    Employees.findAll({
+      order: sequelize.col('empNum')
+    })
       .then((data) => resolve(data))
       .catch((err) => reject(err));
   });
