@@ -35,7 +35,8 @@ module.exports.registerUser = (userData) => {
         if (userData.password != userData.password2) {
             reject("Passwords do not match");
         }
-        // bcrypt.genSalt(10, function (err, salt) { // Generate a "salt" using 10 rounds
+      
+        // bcrypt.genSalt(10, function(err, salt) { // Generate a "salt" using 10 rounds
         //     if (err) {
         //         reject(`There was an error encrypting the password`);
         //     }
@@ -46,13 +47,13 @@ module.exports.registerUser = (userData) => {
         //         userData.password = hash;
         //     });
         // });
-
-
+            
         // bcrypt.genSalt(10, function (err, salt) { // Generate a "salt" using 10 rounds
         //     bcrypt.hash(userData.password, salt, function (err, hash) { // encrypt the password: "myPassword123"
         //         userData.password = hash;
         //     });
         // });
+       
         userData.password = bcrypt.hashSync(userData.password, 10);
 
         var newUser = new User(userData);
