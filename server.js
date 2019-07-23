@@ -15,12 +15,16 @@ const express = require("express");
 //CREATE EXPRESS OBJECT TO EXPOSE METHODS
 const app = express();
 const path = require("path");
-const dataservice = require("./data-service.js");
 const multer = require("multer");
 const fs = require('fs');
 const bodyParser = require('body-parser');
 const exphbs = require("express-handlebars");
+const clientSessions = require("client-sessions");
+const dataServiceAuth = require("./data-service-auth.js");
+const dataService = require("./data-service.js");
+
 app.set('view engine', '.hbs');
+
 app.engine('.hbs', exphbs({
     extname: '.hbs',
     defaultLayout: 'main',
@@ -41,6 +45,40 @@ app.engine('.hbs', exphbs({
         }
     }
 }));
+
+//DIRECT APP TO STATIC FOLDER TO USE
+app.use(express.static('public'));
+
+// Setup client-sessions
+app.use(clientSessions({
+    cookieName: "session", // this is the object name that will be added to 'req'
+    secret: "week10example_web322", // this should be a long un-guessable string.
+    duration: 2 * 60 * 1000, // duration of the session in milliseconds (2 minutes)
+    activeDuration: 1000 * 60 // the session will be extended by this many ms each request (1 minute)
+}));
+
+app.use(function (req, res, next) {
+    res.locals.session = req.session;
+    next();
+});
+
+// An authenticated route that requires the user to be logged in.
+// Notice the middleware 'ensureLogin' that comes before the function
+// that renders the dashboard page
+app.get("/dashboard", ensureLogin, (req, res) => {
+    res.render("dashboard", { user: req.session.user, title: "Dashboard" });
+});
+// This is a helper middleware function that checks if a user is logged in
+// we can use it in any route that we want to protect against unauthenticated access.
+// A more advanced version of this would include checks for authorization as well after
+// checking if the user is authenticated
+function ensureLogin(req, res, next) {
+    if (!req.session.user) {
+        res.redirect("/login");
+    } else {
+        next();
+    }
+}
 
 // this adds property "activeRoute" to "app.locals"
 app.use(function (req, res, next) {
@@ -68,9 +106,6 @@ const storage = multer.diskStorage({
 // tell multer to use the diskStorage function for naming files instead of the default.
 const upload = multer({ storage: storage });
 
-//DIRECT APP TO STATIC FOLDER TO USE
-app.use(express.static('public'));
-
 // setup a 'route' to listen on the default url path
 app.get("/", (req, res) => {
     res.render("home", { title: "Home" });
@@ -80,113 +115,113 @@ app.get("/about", (req, res) => {
     res.render("about", { title: "About" });
 });
 
-app.get("/employees", (req, res) => {
+app.get("/employees", ensureLogin, (req, res) => {
     if (req.query.status) {
         let status = req.query.status;
-        dataservice.getEmployeesByStatus(status)
+        dataService.getEmployeesByStatus(status)
             .then((data) => {
                 if (data.length > 0)
-                    res.render("employees", { employees: data });
+                    res.render("employees", { employees: data, title: "Employees" });
                 else
-                    res.render("employees", { message: "no results" });
+                res.render("employees", { message: "no results", title: "Employees" });
             })
             .catch(() => {
-                res.render("employees", { message: "no results" });
+                res.render("employees", { message: "no results", title: "Employees" });
             });
     }
     else if (req.query.department) {
         let department = req.query.department;
-        dataservice.getEmployeesByDepartment(department)
+        dataService.getEmployeesByDepartment(department)
             .then((data) => {
                 if (data.length > 0)
-                    res.render("employees", { employees: data });
+                res.render("employees", { employees: data, title: "Employees" });
                 else
-                    res.render("employees", { message: "no results" });
+                res.render("employees", { message: "no results", title: "Employees" });
             })
             .catch(() => {
-                res.render("employees", { message: "no results" });
+                res.render("employees", { message: "no results", title: "Employees" });
             });
     }
     else if (req.query.manager) {
         let manager = req.query.manager;
-        dataservice.getEmployeesByManager(manager)
+        dataService.getEmployeesByManager(manager)
             .then((data) => {
                 if (data.length > 0)
-                    res.render("employees", { employees: data });
+                res.render("employees", { employees: data, title: "Employees" });
                 else
-                    res.render("employees", { message: "no results" });
+                    res.render("employees", { message: "no results", title: "Employees" });
             })
             .catch(() => {
-                res.render("employees", { message: "no results" });
+                res.render("employees", { message: "no results", title: "Employees" });
             });
     }
     else {
-        dataservice.getAllEmployees()
+        dataService.getAllEmployees()
             .then((data) => {
                 if (data.length > 0)
-                    res.render("employees", { employees: data });
+                res.render("employees", { employees: data, title: "Employees" });
                 else
-                    res.render("employees", { message: "no results" });
+                res.render("employees", { message: "no results", title: "Employees" });
             })
             .catch(() => {
-                res.render("employees", { message: "no results" });
+                res.render("employees", { message: "no results", title: "Employees" });
             });
     }
 });
 
-app.get("/managers", (req, res) => {
-    dataservice.getManagers()
-    .then((data) => {
-        if (data.length > 0)
-            res.render("managers", { employees: data });
-        else
-            res.render("managers", { message: "no results" });
-    })
-    .catch(() => {
-        res.render("managers", { message: "no results" });
-    });
-});
-
-app.get("/departments", (req, res) => {
-    dataservice.getDepartments()
+app.get("/managers", ensureLogin, (req, res) => {
+    dataService.getManagers()
         .then((data) => {
             if (data.length > 0)
-                res.render("departments", { departments: data });
+                res.render("managers", { employees: data, title: "Managers" });
             else
-                res.render("departments", { message: "no results" });
+                res.render("managers", { message: "no results", title: "Managers" });
         })
         .catch(() => {
-            res.render("departments", { message: "no results" });
+            res.render("managers", { message: "no results", title: "Managers" });
         });
 });
 
-app.get("/employees/add", (req, res) => {
-    dataservice.getDepartments()
-        .then((data) => res.render("addEmployee", { departments: data }))
-        .catch(() => res.render("addEmployee", { departments: [] }))
+app.get("/departments", ensureLogin, (req, res) => {
+    dataService.getDepartments()
+        .then((data) => {
+            if (data.length > 0)
+                res.render("departments", { departments: data, title: "Departments" });
+            else
+                res.render("departments", { message: "no results", title: "Departments" });
+        })
+        .catch(() => {
+            res.render("departments", { message: "no results", title: "Departments" });
+        });
 });
 
-app.get('/departments/add', (req, res) => {
+app.get("/employees/add", ensureLogin, (req, res) => {
+    dataService.getDepartments()
+        .then((data) => res.render("addEmployee", { departments: data , title: "Add Employee"}))
+        .catch(() => res.render("addEmployee", { departments: [], title: "Add Employee" }))
+});
+
+app.get('/departments/add', ensureLogin, (req, res) => {
     res.render("addDepartment", { title: "Add Department" });
 });
 
-app.get("/images/add", (req, res) => {
+app.get("/images/add", ensureLogin, (req, res) => {
     res.render("addImage", { title: "Add Image" });
 });
 
-app.get("/images", (req, res) => {
+app.get("/images", ensureLogin, (req, res) => {
     fs.readdir(path.join(__dirname, "/public/images/uploaded"), function (err, data) {
         console.log(data);
         res.render("images", { images: data, title: "Images" });
     });
 });
 
-app.get("/employee/:empNum", (req, res) => {
+app.get("/employee/:empNum", ensureLogin, (req, res) => {
 
     // initialize an empty object to store the values
     let viewData = {};
 
-    dataservice.getEmployeeByNum(req.params.empNum).then((data) => {
+    dataService.getEmployeeByNum(req.params.empNum).then((data) => {
         if (data) {
             viewData.employee = data; //store employee data in the "viewData" object as "employee"
         } else {
@@ -195,7 +230,7 @@ app.get("/employee/:empNum", (req, res) => {
     }).catch(() => {
         viewData.employee = null; // set employee to null if there was an error 
     })
-        .then(dataservice.getDepartments)
+        .then(dataService.getDepartments)
         .catch((err) => {
             res.status(500).send("Unable to Get departments");
         })
@@ -219,7 +254,10 @@ app.get("/employee/:empNum", (req, res) => {
             if (viewData.employee == null) { // if no employee - return an error
                 res.status(404).send("Employee Not Found");
             } else {
-                res.render("employee", { viewData: viewData }); // render the "employee" view
+                let tmp = JSON.stringify(viewData.employee[0]);
+                tmp = JSON.parse(tmp);
+                viewData.employee = tmp; // FIX EMPLOYEE BEING ARRAY WHEN RENDERED
+                res.render("employee", { viewData: viewData, title: `Employee #${viewData.employee.empNum}`}); // render the "employee" view
             }
         })
         .catch((err) => {
@@ -229,73 +267,115 @@ app.get("/employee/:empNum", (req, res) => {
 });
 
 
-app.get("/department/:value", (req, res) => {
+app.get("/department/:value", ensureLogin, (req, res) => {
     var value = req.params.value;
-    dataservice.getDepartmentbyId(value)
+    dataService.getDepartmentbyId(value)
         .then((data) => {
             if (data != undefined)
-                res.render("department", { department: data });
+                res.render("department", { department: data, title:"Department" });
             else
                 res.status(404).send("Department Not Found");
         })
         .catch(() => { res.status(404).send("Department Not Found"); })
 });
 
-app.get("/departments/delete/:departmentId", (req, res) => {
-    dataservice.deleteDepartmentById(req.params.departmentId)
+app.get("/departments/delete/:departmentId", ensureLogin, (req, res) => {
+    dataService.deleteDepartmentById(req.params.departmentId)
         .then(() => res.redirect("/departments"))
         .catch(() => res.status(500).send("Unable to Remove Department / Department not found"))
 })
 
-app.get("/employees/delete/:empNum", (req, res) => {
-    dataservice.deleteEmployeeByNum(req.params.empNum)
+app.get("/employees/delete/:empNum", ensureLogin, (req, res) => {
+    dataService.deleteEmployeeByNum(req.params.empNum)
         .then(() => res.redirect("/employees"))
         .catch(() => res.status(500).send("Unable to Remove Employee / Employee not found"))
 })
 
 //We must accept a single file with the name of imageFile
-app.post("/images/add", upload.single("imageFile"), (req, res) => {
+app.post("/images/add", ensureLogin, upload.single("imageFile"), (req, res) => {
     res.redirect("/images");
 });
 
 // from form post here
-app.post("/employees/add", (req, res) => {
+app.post("/employees/add", ensureLogin, (req, res) => {
     console.log(req.body);
-    dataservice.addEmployee(req.body)
+    dataService.addEmployee(req.body)
         .then(() => { res.redirect("/employees") })
         .catch(() => res.status(500).send("Unable to Add Employee"))
 });
 
-app.post("/employee/update", (req, res) => {
+app.post("/employee/update", ensureLogin, (req, res) => {
     console.log(req.body);
-    dataservice.updateEmployee(req.body)
+    dataService.updateEmployee(req.body)
         .then(() => { res.redirect("/employees"); })
         .catch(() => res.status(500).send("Unable to Update Employee / Employee not found"))
 });
 
-app.post("/departments/add", (req, res) => {
+app.post("/departments/add", ensureLogin, (req, res) => {
     console.log(req.body);
-    dataservice.addDepartment(req.body)
+    dataService.addDepartment(req.body)
         .then(() => { res.redirect("/departments") })
         .catch(() => res.status(500).send("Unable to Add Department"))
 });
 
-app.post("/department/update", (req, res) => {
+app.post("/department/update", ensureLogin, (req, res) => {
     console.log(req.body);
-    dataservice.updateDepartment(req.body)
+    dataService.updateDepartment(req.body)
         .then(() => { res.redirect("/departments"); })
         .catch(() => res.status(500).send("Unable to Update Department / Department not found"))
 });
 
-app.use((req, res) => {
-    res.status(404);
-    res.render(path.join(__dirname, "/views/404.hbs"));
+app.get("/login", (req, res) => {
+    res.render("login", { title: "Login" }); 
 });
 
-// setup http server to listen on HTTP_PORT if initilization successful
-dataservice.initialize()
-    .then(() => {
-        console.log(`Express http server listening on ${HTTP_PORT}`);
-        app.listen(HTTP_PORT);
-    })
-    .catch((err) => { console.log(`unable to start server: ${err}`); });
+app.get("/register", (req, res) => {
+    res.render("register", { title: "Register" }); 
+});
+
+app.post("/register", (req, res) => {
+    dataServiceAuth.registerUser(req.body)
+        .then(res.render("register", { successMessage: "User Created!", title: "Register" }))
+        .catch((err) => { res.render("register", { errorMessage: err, userName: req.body.userName, title: "Register" }) });
+});
+
+app.post("/login", (req, res) => {
+    req.body.userAgent = req.get('User-Agent');
+    dataServiceAuth.checkUser(req.body)
+        .then((user) => {
+            req.session.user = {
+                userName: user.userName,
+                email: user.email,
+                loginHistory: user.loginHistory
+            }
+            res.redirect('/employees');
+        })
+        .catch((err) => { res.render("login", { errorMessage: err, userName: req.body.userName, title: "Login" }) });
+});
+
+app.get("/logout", (req, res) => {
+    req.session.reset();
+    res.redirect("/");
+});
+
+app.get("/userHistory", ensureLogin, (req, res) => {
+    res.render("userHistory", { title: "User History" });
+});
+
+app.use((req, res) => {
+    res.status(404);
+    res.render(path.join(__dirname, "/views/404.hbs"), {title:"404: Page Not Found"});
+});
+
+// setup http server to listen on HTTP_PORT if init and auth-init successful
+dataService.initialize()
+    .then(dataServiceAuth.initialize)
+    .then(function () {
+        app.listen(HTTP_PORT, () => {
+            console.log("app listening on: " + HTTP_PORT)
+        });
+    }).catch((err) => {
+        console.log("unable to start server: " + err);
+    });
+
+

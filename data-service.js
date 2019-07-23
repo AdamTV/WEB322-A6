@@ -40,23 +40,6 @@ var Departments = sequelize.define('Departments', {
   departmentName: Sequelize.STRING
 });
 
-emp1 = {
-  firstName: "asdf",
-  lastName: "asdf",
-  email: "asdf",
-  SSN: "asdf",
-  addressStreet: "asdf",
-  addressCity: "asdf",
-  addressState: "asdf",
-  addressPostal: "asdf",
-  maritalStatus: "asdf",
-  isManager: true,
-  employeeManagerNum: 0,
-  status: "asdf",
-  hireDate: "asdf",
-  department: 19
-}
-
 /*This will ensure that our Employee model gets a "department" column that will act as a foreign key to the Department model.
 When a Department is deleted, any associated Employee's will have a "null" value set to their "department" foreign key.*/
 Departments.hasMany(Employees, { foreignKey: 'department' });

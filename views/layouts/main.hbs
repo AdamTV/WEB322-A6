@@ -9,6 +9,9 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
         integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
     <link href="https://fonts.googleapis.com/css?family=Abril+Fatface|Open+Sans&display=swap" rel="stylesheet">
+    <link
+        href="https://fonts.googleapis.com/css?family=Fascinate|Geostar+Fill|Pacifico|Permanent+Marker|Press+Start+2P&display=swap"
+        rel="stylesheet">
     <link href="/css/site.css" rel="stylesheet">
     <title>{{title}}</title>
 </head>
@@ -38,12 +41,45 @@
                     <!--{{#navLink "/employees/add"}}Add Employee{{/navLink}}-->
                     {{!-- {{#navLink "/images/add"}}Add Image{{/navLink}} --}}
                 </ul>
+                {{#if session.user}}
+                <form class="navbar-form navbar-right">
+                    <div class="dropdown">
+                        <button class="btn btn-primary dropdown-toggle" type="button" id="userMenu"
+                            data-toggle="dropdown">
+                            <span
+                                class="glyphicon glyphicon-user"></span>&nbsp;&nbsp;{{session.user.userName}}&nbsp;&nbsp;<span
+                                class="caret"></span>
+                        </button>
+                        <ul class="dropdown-menu" aria-labelledby="userMenu">
+                            <li><a href="/userHistory">User History</a></li>
+                            <li><a href="/logout">Log Out</a></li>
+                        </ul>
+                    </div>
+                </form>
                 <ul class="nav navbar-nav navbar-right">
+                    {{!-- {{#navLink "/images"}}Images{{/navLink}}
+                    {{#navLink "/employees"}}Employees{{/navLink}}
+                    {{#navLink "/departments"}}Departments{{/navLink}} --}}
                     <li><a id="header" href="/images">Images</a></li>
                     <li><a id="header" href="/employees">Employees</a></li>
                     <li><a id="header" href="/managers">Managers</a></li>
                     <li><a id="header" href="/departments">Departments</a></li>
                 </ul>
+                {{/if}}
+                {{#unless session.user}}
+                <form class="navbar-form navbar-right">
+                    <a href="/register" class="btn btn-success"><span
+                            class="glyphicon glyphicon-cog"></span>&nbsp;&nbsp;Register</a>
+                    <a href="/login" class="btn btn-primary"><span
+                            class="glyphicon glyphicon-chevron-right"></span>&nbsp;&nbsp;Log In</a>
+                </form>
+                {{/unless}}
+                {{!-- <ul class="nav navbar-nav navbar-right">
+                    <li><a id="header" href="/images">Images</a></li>
+                    <li><a id="header" href="/employees">Employees</a></li>
+                    <li><a id="header" href="/managers">Managers</a></li>
+                    <li><a id="header" href="/departments">Departments</a></li>
+                </ul> --}}
             </div><!-- /.navbar-collapse -->
         </div><!-- /.container-fluid -->
     </nav>
