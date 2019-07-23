@@ -14,12 +14,11 @@ var userSchema = new Schema({
     }]
 });
 
-let User; // to be defined on new connection (see initialize)
+var User; // to be defined on new connection (see initialize)
 
 module.exports.initialize = function () {
     return new Promise(function (resolve, reject) {
         let db = mongoose.createConnection("mongodb+srv://AdamTV:thepassword@a6-iiyjw.mongodb.net/test?retryWrites=true&w=majority", { useNewUrlParser: true });
-
         db.on('error', (err) => {
             reject(err); // reject the promise with the provided error
         });
@@ -35,7 +34,7 @@ module.exports.registerUser = (userData) => {
         if (userData.password != userData.password2) {
             reject("Passwords do not match");
         }
-      
+
         // bcrypt.genSalt(10, function(err, salt) { // Generate a "salt" using 10 rounds
         //     if (err) {
         //         reject(`There was an error encrypting the password`);
@@ -47,13 +46,13 @@ module.exports.registerUser = (userData) => {
         //         userData.password = hash;
         //     });
         // });
-            
+
         // bcrypt.genSalt(10, function (err, salt) { // Generate a "salt" using 10 rounds
         //     bcrypt.hash(userData.password, salt, function (err, hash) { // encrypt the password: "myPassword123"
         //         userData.password = hash;
         //     });
         // });
-       
+
         userData.password = bcrypt.hashSync(userData.password, 10);
 
         var newUser = new User(userData);
@@ -79,7 +78,7 @@ module.exports.checkUser = (userData) => {
                         .exec()
                         .then(resolve(user[0]))
                         .catch((err) => { reject(`There was an error verifying the user: ${err}`) });
-                    reject(`Incorrect Password for user: ${userData.userName}`);
+                    //reject(`Incorrect Password for user: ${userData.userName}`);
                 }
             }).catch((err) => {
                 console.log(err);

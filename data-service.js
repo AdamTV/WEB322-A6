@@ -137,7 +137,7 @@ module.exports.getEmployeeByNum = (num) => {
 module.exports.updateEmployee = (data) => {
   return new Promise((resolve, reject) => {
     data = prepData(data);
-    Employees.update(data, {
+    Employees.updateOne(data, {
       where: { empNum: data.empNum }
     }).then(() => resolve("success!"))
       .catch((err) => reject(err));
@@ -147,7 +147,7 @@ module.exports.updateEmployee = (data) => {
 module.exports.updateDepartment = (data) => {
   return new Promise((resolve, reject) => {
     data = prepData(data);
-    Departments.update({
+    Departments.updateOne({
       departmentId: data.departmentId,
       departmentName: data.departmentName
     }, {
