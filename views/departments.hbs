@@ -1,0 +1,33 @@
+<div class="container">
+    <div class="row">
+        <div class="col-md-12">
+            <h2>Departments<a href="/departments/add" class="btn btn-success pull-right">Add New Department</a></h2>
+            <hr />
+            <div class="table-responsive">
+                <table class="table ">
+                    <thead>
+                        <tr>
+                            <th>Department Number</th>
+                            <th>Department Name</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {{#each departments}}
+                        <tr>
+                            <td><a href="/employees?department={{departmentId}}">{{departmentId}}</a></td>
+                            <td><a href="/department/{{departmentId}}">{{departmentName}}</a></td>
+                            <td><a href="/departments/delete/{{departmentId}}" id="remove" class="btn btn-danger">REMOVE</a></td>
+                        </tr>
+                        {{/each}}
+                    </tbody>
+                </table>
+                {{#unless departments}}
+                <div class="col-md-12 text-center">
+                    <strong style="color:white">{{message}}</strong>
+                </div>
+                {{/unless}}
+            </div>
+        </div>
+    </div>
+</div>
