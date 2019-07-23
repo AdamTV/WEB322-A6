@@ -123,7 +123,7 @@ app.get("/employees", ensureLogin, (req, res) => {
                 if (data.length > 0)
                     res.render("employees", { employees: data, title: "Employees" });
                 else
-                res.render("employees", { message: "no results", title: "Employees" });
+                    res.render("employees", { message: "no results", title: "Employees" });
             })
             .catch(() => {
                 res.render("employees", { message: "no results", title: "Employees" });
@@ -134,9 +134,9 @@ app.get("/employees", ensureLogin, (req, res) => {
         dataService.getEmployeesByDepartment(department)
             .then((data) => {
                 if (data.length > 0)
-                res.render("employees", { employees: data, title: "Employees" });
+                    res.render("employees", { employees: data, title: "Employees" });
                 else
-                res.render("employees", { message: "no results", title: "Employees" });
+                    res.render("employees", { message: "no results", title: "Employees" });
             })
             .catch(() => {
                 res.render("employees", { message: "no results", title: "Employees" });
@@ -147,7 +147,7 @@ app.get("/employees", ensureLogin, (req, res) => {
         dataService.getEmployeesByManager(manager)
             .then((data) => {
                 if (data.length > 0)
-                res.render("employees", { employees: data, title: "Employees" });
+                    res.render("employees", { employees: data, title: "Employees" });
                 else
                     res.render("employees", { message: "no results", title: "Employees" });
             })
@@ -159,9 +159,9 @@ app.get("/employees", ensureLogin, (req, res) => {
         dataService.getAllEmployees()
             .then((data) => {
                 if (data.length > 0)
-                res.render("employees", { employees: data, title: "Employees" });
+                    res.render("employees", { employees: data, title: "Employees" });
                 else
-                res.render("employees", { message: "no results", title: "Employees" });
+                    res.render("employees", { message: "no results", title: "Employees" });
             })
             .catch(() => {
                 res.render("employees", { message: "no results", title: "Employees" });
@@ -197,7 +197,7 @@ app.get("/departments", ensureLogin, (req, res) => {
 
 app.get("/employees/add", ensureLogin, (req, res) => {
     dataService.getDepartments()
-        .then((data) => res.render("addEmployee", { departments: data , title: "Add Employee"}))
+        .then((data) => res.render("addEmployee", { departments: data, title: "Add Employee" }))
         .catch(() => res.render("addEmployee", { departments: [], title: "Add Employee" }))
 });
 
@@ -257,7 +257,7 @@ app.get("/employee/:empNum", ensureLogin, (req, res) => {
                 let tmp = JSON.stringify(viewData.employee[0]);
                 tmp = JSON.parse(tmp);
                 viewData.employee = tmp; // FIX EMPLOYEE BEING ARRAY WHEN RENDERED
-                res.render("employee", { viewData: viewData, title: `Employee #${viewData.employee.empNum}`}); // render the "employee" view
+                res.render("employee", { viewData: viewData, title: `Employee #${viewData.employee.empNum}` }); // render the "employee" view
             }
         })
         .catch((err) => {
@@ -272,7 +272,7 @@ app.get("/department/:value", ensureLogin, (req, res) => {
     dataService.getDepartmentbyId(value)
         .then((data) => {
             if (data != undefined)
-                res.render("department", { department: data, title:"Department" });
+                res.render("department", { department: data, title: "Department" });
             else
                 res.status(404).send("Department Not Found");
         })
@@ -326,16 +326,16 @@ app.post("/department/update", ensureLogin, (req, res) => {
 });
 
 app.get("/login", (req, res) => {
-    res.render("login", { title: "Login" }); 
+    res.render("login", { title: "Login" });
 });
 
 app.get("/register", (req, res) => {
-    res.render("register", { title: "Register" }); 
+    res.render("register", { title: "Register" });
 });
 
 app.post("/register", (req, res) => {
     dataServiceAuth.registerUser(req.body)
-        .then(res.render("register", { successMessage: "User Created!", title: "Register" }))
+        .then(() => { res.render("register", { successMessage: "User Created!", title: "Register" }) })
         .catch((err) => { res.render("register", { errorMessage: err, userName: req.body.userName, title: "Register" }) });
 });
 
@@ -364,12 +364,14 @@ app.get("/userHistory", ensureLogin, (req, res) => {
 
 app.use((req, res) => {
     res.status(404);
-    res.render(path.join(__dirname, "/views/404.hbs"), {title:"404: Page Not Found"});
+    res.render(path.join(__dirname, "/views/404.hbs"), { title: "404: Page Not Found" });
 });
 
 // setup http server to listen on HTTP_PORT if init and auth-init successful
 dataService.initialize()
-    .then(dataServiceAuth.initialize)
+    .then(() => { 
+        dataServiceAuth.initialize; 
+    })
     .catch((err) => {
         console.log("unable to initialize users: " + err);
     })

@@ -14,19 +14,21 @@ var userSchema = new Schema({
     }]
 });
 
-var User; // to be defined on new connection (see initialize)
-let db = mongoose.createConnection("mongodb+srv://AdamTV:thepassword@a6-iiyjw.mongodb.net/test?retryWrites=true&w=majority", { useNewUrlParser: true });
-db.once('open', () => {
-    User = db.model("users", userSchema);
-});
+let User; // to be defined on new connection (see initialize)
+// let db = mongoose.createConnection("mongodb+srv://AdamTV:thepassword@a6-iiyjw.mongodb.net/test?retryWrites=true&w=majority", { useNewUrlParser: true });
+// db.once('open', () => {
+//     User = db.model("users", userSchema);
+// });
 module.exports.initialize = function () {
     return new Promise(function (resolve, reject) {
-        let db = mongoose.createConnection("mongodb+srv://AdamTV:thepassword@a6-iiyjw.mongodb.net/test?retryWrites=true&w=majority", { useNewUrlParser: true });
+        let db = mongoose.createConnection("mongodb+srv://test:test123@a6-iiyjw.mongodb.net/test?retryWrites=true&w=majority", { useNewUrlParser: true });
+        console.log(`Mongoose connection created`);
         db.on('error', (err) => {
             reject(err); // reject the promise with the provided error
         });
         db.once('open', () => {
             User = db.model("users", userSchema);
+            console.log(`user database modeled`);
             resolve();
         });
     });

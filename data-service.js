@@ -47,10 +47,10 @@ Departments.hasMany(Employees, { foreignKey: 'department' });
 module.exports.initialize = () => {
   return new Promise(function (resolve, reject) {
     sequelize.sync().then(() => {
-      console.log("database sync success!");
+      console.log("employee database sync success!");
       resolve();
     }).catch(function () {
-      reject("unable to sync the database");
+      reject("unable to sync the employee database");
     });
   });
 }
