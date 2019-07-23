@@ -370,6 +370,9 @@ app.use((req, res) => {
 // setup http server to listen on HTTP_PORT if init and auth-init successful
 dataService.initialize()
     .then(dataServiceAuth.initialize)
+    .catch((err) => {
+        console.log("unable to initialize users: " + err);
+    })
     .then(function () {
         app.listen(HTTP_PORT, () => {
             console.log("app listening on: " + HTTP_PORT)
