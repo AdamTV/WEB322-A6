@@ -14,12 +14,11 @@ var userSchema = new Schema({
     }]
 });
 
-let User; // to be defined on new connection (see initialize)
+var User; // to be defined on new connection (see initialize)
 
 module.exports.initialize = function () {
     return new Promise(function (resolve, reject) {
         let db = mongoose.createConnection("mongodb+srv://AdamTV:thepassword@a6-iiyjw.mongodb.net/test?retryWrites=true&w=majority", { useNewUrlParser: true });
-
         db.on('error', (err) => {
             reject(err); // reject the promise with the provided error
         });
