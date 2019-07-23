@@ -15,7 +15,10 @@ var userSchema = new Schema({
 });
 
 var User; // to be defined on new connection (see initialize)
-
+let db = mongoose.createConnection("mongodb+srv://AdamTV:thepassword@a6-iiyjw.mongodb.net/test?retryWrites=true&w=majority", { useNewUrlParser: true });
+db.once('open', () => {
+    User = db.model("users", userSchema);
+});
 module.exports.initialize = function () {
     return new Promise(function (resolve, reject) {
         let db = mongoose.createConnection("mongodb+srv://AdamTV:thepassword@a6-iiyjw.mongodb.net/test?retryWrites=true&w=majority", { useNewUrlParser: true });
