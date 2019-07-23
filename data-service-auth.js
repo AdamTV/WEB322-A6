@@ -47,12 +47,13 @@ module.exports.registerUser = (userData) => {
         //     });
         // });
 
-        
+
         // bcrypt.genSalt(10, function (err, salt) { // Generate a "salt" using 10 rounds
         //     bcrypt.hash(userData.password, salt, function (err, hash) { // encrypt the password: "myPassword123"
         //         userData.password = hash;
         //     });
         // });
+        userData.password = bcrypt.hashSync(userData.password, 10);
 
         var newUser = new User(userData);
         newUser.save((err) => {
@@ -69,25 +70,21 @@ module.exports.checkUser = (userData) => {
         User.find({ userName: userData.userName })
             .exec()
             .then((user) => {
-                // if (user.length == 0)
-                //     reject(`Unable to find user: ${userData.userName}`);
-                bcrypt.compare(user.password, userData.password).then((res) => {
-                    if (res === true) {
-                        user[0].loginHistory.push({ dateTime: (new Date()).toString(), userAgent: userData.userAgent });
-                        User.update({ userName: user[0].userName }, { $set: { loginHistory: user[0].loginHistory } })
-                            .exec()
-                            .then(resolve(user[0]))
-                            .catch((err) => { reject(`There was an error verifying the user: ${err}`) });
-                    }
-                    else {
-                        reject(`Incorrect Password for user: ${userData.userName}`);
-                    }
-                }).catch((err) => {
-                    console.log(err);
-                });
-            })
-            .catch((err) => {
-                reject(`Unable to find user: ${userData.userName}\n ${err}`);
+                if (user.length == 0)
+                    reject(`Unable to find user: ${userData.userName}`);
+                if (bcrypt.compareSync(userData.password, user[0].password)) {
+                    user[0].loginHistory.push({ dateTime: (new Date()).toString(), userAgent: userData.userAgent });
+                    User.update({ userName: user[0].userName }, { $set: { loginHistory: user[0].loginHistory } })
+                        .exec()
+                        .then(resolve(user[0]))
+                        .catch((err) => { reject(`There was an error verifying the user: ${err}`) });
+                    reject(`Incorrect Password for user: ${userData.userName}`);
+                }
+            }).catch((err) => {
+                console.log(err);
             });
     });
+    // .catch((err) => {
+    //     reject(`Unable to find user: ${userData.userName}\n ${err}`);
+    // });
 }
