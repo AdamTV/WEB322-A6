@@ -14,7 +14,7 @@ var userSchema = new Schema({
     }]
 });
 
-let User; // to be defined on new connection (see initialize)
+User; // to be defined on new connection (see initialize)
 // let db = mongoose.createConnection("mongodb+srv://AdamTV:thepassword@a6-iiyjw.mongodb.net/test?retryWrites=true&w=majority", { useNewUrlParser: true });
 // db.once('open', () => {
 //     User = db.model("users", userSchema);
@@ -86,7 +86,7 @@ module.exports.checkUser = (userData) => {
                     //reject(`Incorrect Password for user: ${userData.userName}`);
                 }
             }).catch((err) => {
-                console.log(err);
+                reject(err);
             });
     });
     // .catch((err) => {
