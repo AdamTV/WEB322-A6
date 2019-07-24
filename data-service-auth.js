@@ -14,11 +14,11 @@ var userSchema = new Schema({
     }]
 });
 
-let User; // to be defined on new connection (see initialize)
-let db = mongoose.createConnection("mongodb+srv://AdamTV:thepassword@a6-iiyjw.mongodb.net/test?retryWrites=true&w=majority", { useNewUrlParser: true });
-db.once('open', () => {
-    User = db.model("users", userSchema);
-});
+let User = {}; // to be defined on new connection (see initialize)
+// let db = mongoose.createConnection("mongodb+srv://AdamTV:thepassword@a6-iiyjw.mongodb.net/test?retryWrites=true&w=majority", { useNewUrlParser: true });
+// db.once('open', () => {
+//     User = db.model("users", userSchema);
+// });
 module.exports.initialize = function () {
     return new Promise(function (resolve, reject) {
         let db = mongoose.createConnection("mongodb+srv://test:test123@a6-iiyjw.mongodb.net/test?retryWrites=true&w=majority", { useNewUrlParser: true });
