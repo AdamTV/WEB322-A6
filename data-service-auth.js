@@ -43,7 +43,7 @@ module.exports.registerUser = (userData) => {
 
         // bcrypt.genSalt(10, function(err, salt) { // Generate a "salt" using 10 rounds
         //     if (err) {
-        //         reject(`There was an error encrypting the password`);
+        //         reject(`There was an error salting the password`);
         //     }
         //     bcrypt.hash(userData.password, salt, function (err, hash) { // encrypt the password
         //         if (err) {
@@ -54,7 +54,7 @@ module.exports.registerUser = (userData) => {
         // });
 
         // bcrypt.genSalt(10, function (err, salt) { // Generate a "salt" using 10 rounds
-        //     bcrypt.hash(userData.password, salt, function (err, hash) { // encrypt the password: "myPassword123"
+        //     bcrypt.hash(userData.password, salt, function (err, hash) { // encrypt the password
         //         userData.password = hash;
         //     });
         // });
