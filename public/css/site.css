@@ -1,10 +1,10 @@
 h1, h2, h3, h4, h5, h6 {
-    font-family: 'Fascinate', cursive;
+    font-family: 'Abril Fatface', cursive;
     color: maroon;
 }
 
 p {
-        font-family: 'Permanent Marker', cursive;
+        font-family: 'Open Sans', sans-serif;
     color: white;
 }
 
@@ -15,7 +15,7 @@ body {
 .navbar {
     border-color: maroon;
     background-color: maroon;
-        font-family: 'Permanent Marker', cursive;
+        font-family: 'Open Sans', sans-serif;
     color: white;
 
 }
@@ -25,31 +25,31 @@ body {
 }
 
 legend {
-    font-family: 'Permanent Marker', cursive;
+    font-family: 'Open Sans', sans-serif;
     color: white;
 }
 
 label {
-    font-family: 'Permanent Marker', cursive;
+    font-family: 'Open Sans', sans-serif;
     color: white;
 }
 
 #theHeader{
     color: white;
-    font-family: 'Fascinate', cursive;
+    font-family: 'Abril Fatface', cursive;
 }
 
 th,td{
-    font-family: 'Permanent Marker', cursive;
+    font-family: 'Open Sans', sans-serif;
     color: white;
 }
 
 #remove{
-    font-family: 'Fascinate', cursive;
+    font-family: 'Abril Fatface', cursive;
 }
 
 #header{
-    font-family: 'Permanent Marker', cursive;
+    font-family: 'Open Sans', sans-serif;
     color: white;
 }
 
