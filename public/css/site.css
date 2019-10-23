@@ -12,6 +12,7 @@ p {
 
 body {
     background-color: rgb(22, 22, 22);
+    text-align: center;
 }
 
 .navbar {
@@ -19,7 +20,6 @@ body {
     background-color: white;
     font-family: 'Roboto', sans-serif;
     color: white;
-
 }
 
 .navbar-toggle {
@@ -64,4 +64,15 @@ h2{
 }
 p{
     font-size: 300%;
+}
+.container{
+    height: 600px;
+    line-height: 600px;
+    text-align: center;
+}
+
+#comingSoon{
+    display: inline-block;    
+    vertical-align: middle;
+    line-height: normal; 
 }
