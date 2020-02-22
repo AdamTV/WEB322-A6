@@ -11,6 +11,10 @@ var userSchema = new Schema({
     "loginHistory": [{
         dateTime: Date,
         userAgent: String
+    // }],
+    // "cartItems": [{
+    //     quantity: Number,
+    //     item: String
     }]
 });
 

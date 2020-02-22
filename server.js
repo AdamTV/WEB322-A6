@@ -106,8 +106,18 @@ const storage = multer.diskStorage({
 // tell multer to use the diskStorage function for naming files instead of the default.
 const upload = multer({ storage: storage });
 
+var products = {
+    testProd1: {
+        src: "IMG_2755.jpg",
+        title: "Test Title",
+        path: "TestTitle",
+        description: "Test Desctiption"
+    }
+};
+
 // setup a 'route' to listen on the default url path
 app.get("/", (req, res) => {
+    req.session.products = products;
     res.render("home", { title: "Home" });
 });
 
@@ -348,7 +358,7 @@ app.post("/login", (req, res) => {
                 email: user.email,
                 loginHistory: user.loginHistory
             }
-            res.redirect('/employees');
+            res.redirect('/');
         })
         .catch((err) => { res.render("login", { errorMessage: err, userName: req.body.userName, title: "Login" }) });
 });
@@ -362,6 +372,17 @@ app.get("/userHistory", ensureLogin, (req, res) => {
     res.render("userHistory", { title: "User History" });
 });
 
+app.get("/cart", ensureLogin, (req, res) => {
+    res.render("cart", { title: "Cart" });
+});
+
+app.get("/products/:path", (req, res) => {
+    req.session.product = products.testProd1;
+    res.render("products", { title: "Products" });
+});
+
+
+/// NO MORE app.gets before catch 404!
 app.use((req, res) => {
     res.status(404);
     res.render(path.join(__dirname, "/views/404.hbs"), { title: "404: Page Not Found" });
@@ -369,8 +390,8 @@ app.use((req, res) => {
 
 // setup http server to listen on HTTP_PORT if init and auth-init successful
 dataService.initialize()
-    .then(() => { 
-        dataServiceAuth.initialize(); 
+    .then(() => {
+        dataServiceAuth.initialize();
     })
     .catch((err) => {
         console.log("unable to initialize users: " + err);
