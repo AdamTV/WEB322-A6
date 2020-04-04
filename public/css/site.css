@@ -53,12 +53,11 @@ th,td{
 
 #header{
     font-family: 'Roboto', sans-serif;
-    color: black;
-    font-size: 110%;
+    color: white;
 }
 
 #header:hover{
-    color:blue;
+    color:black;
 }
 h2{
     font-size: 500%;
@@ -66,13 +65,14 @@ h2{
 p{
     font-size: 300%;
 }
-.navbar-form, .navbar-nav{
-    margin-top: 60px;
+.container{
+    height: 600px;
+    line-height: 600px;
+    text-align: center;
 }
-#products{
-    color: white;
-    font-size: 200%;
-}
-a{
-    color: white;
+
+#comingSoon{
+    display: inline-block;    
+    vertical-align: middle;
+    line-height: normal; 
 }
