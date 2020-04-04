@@ -1,12 +1,10 @@
 h1, h2, h3, h4, h5, h6 {
-    font-family: 'Roboto', sans-serif;
-    color: lightblue;
+    font-family: 'Abril Fatface', cursive;
+    color: maroon;
 }
-aside{
-    text-align: center;
-}
+
 p {
-    font-family: 'Roboto', sans-serif;
+        font-family: 'Open Sans', sans-serif;
     color: white;
 }
 
@@ -15,9 +13,9 @@ body {
 }
 
 .navbar {
-    border-color: white;
-    background-color: white;
-    font-family: 'Roboto', sans-serif;
+    border-color: maroon;
+    background-color: maroon;
+        font-family: 'Open Sans', sans-serif;
     color: white;
 
 }
@@ -27,41 +25,34 @@ body {
 }
 
 legend {
-    font-family: 'Roboto', sans-serif;
+    font-family: 'Open Sans', sans-serif;
     color: white;
 }
 
 label {
-    font-family: 'Roboto', sans-serif;
+    font-family: 'Open Sans', sans-serif;
     color: white;
 }
 
 #theHeader{
-    color: lightblue;
-    font-family: 'Roboto', sans-serif;
-    text-align: center;
+    color: white;
+    font-family: 'Abril Fatface', cursive;
 }
 
 th,td{
-    font-family: 'Roboto', sans-serif;
+    font-family: 'Open Sans', sans-serif;
     color: white;
 }
 
 #remove{
-    font-family: 'Roboto', sans-serif;
+    font-family: 'Abril Fatface', cursive;
 }
 
 #header{
-    font-family: 'Roboto', sans-serif;
+    font-family: 'Open Sans', sans-serif;
     color: white;
 }
 
 #header:hover{
     color:black;
-}
-h2{
-    font-size: 500%;
-}
-p{
-    font-size: 300%;
 }
