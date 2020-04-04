@@ -1,10 +1,10 @@
 h1, h2, h3, h4, h5, h6 {
-    font-family: 'Fascinate', cursive;
+    font-family: 'Baloo Thambi 2', cursive;
     color: maroon;
 }
 
 p {
-        font-family: 'Permanent Marker', cursive;
+    font-family: 'Roboto', sans-serif;
     color: white;
 }
 
@@ -15,9 +15,8 @@ body {
 .navbar {
     border-color: maroon;
     background-color: maroon;
-        font-family: 'Permanent Marker', cursive;
+    font-family: 'Roboto', sans-serif;
     color: white;
-
 }
 
 .navbar-toggle {
@@ -25,34 +24,34 @@ body {
 }
 
 legend {
-    font-family: 'Permanent Marker', cursive;
+    font-family: 'Roboto', sans-serif;
     color: white;
 }
 
 label {
-    font-family: 'Permanent Marker', cursive;
+    font-family: 'Roboto', sans-serif;
     color: white;
 }
 
-#theHeader{
+#theHeader {
     color: white;
-    font-family: 'Fascinate', cursive;
+    font-family: 'Baloo Thambi 2', cursive;
 }
 
-th,td{
-    font-family: 'Permanent Marker', cursive;
-    color: white;
-}
-
-#remove{
-    font-family: 'Fascinate', cursive;
-}
-
-#header{
-    font-family: 'Permanent Marker', cursive;
+th, td {
+    font-family: 'Roboto', sans-serif;
     color: white;
 }
 
-#header:hover{
-    color:black;
+#remove {
+    font-family: 'Baloo Thambi 2', cursive;
+}
+
+#header {
+    font-family: 'Roboto', sans-serif;
+    color: white;
+}
+
+#header:hover {
+    color: black;
 }
